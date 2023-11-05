@@ -1,57 +1,75 @@
-
 describe('Register a user', () => {
     beforeEach(() => {
-      // visit the first website of the project
+      // Visit the registration page
       cy.visit('https://www.automationexercise.com/login');
       cy.url().should('eq', 'https://www.automationexercise.com/login');
     });
   
-    it('Visits the website and checks response data', () => {
+    it('checking sign-up box and entering user data', () => {
+      // Verify that we are on the correct page
+      cy.url().should('include', 'https://www.automationexercise.com/login');
+  
+      // Check that the sign-up form elements are visible
+      cy.get('.signup-form input:nth-child(2)').should('be.visible');
+      cy.get('.signup-form input:nth-child(3)').should('be.visible');
+  
+      // Enter Name
+      cy.get('.signup-form input:nth-child(2)').click().type('AjdinTester');
+  
+      // Enter Email
+      cy.xpath("//input[@data-qa='signup-email']").click().type('ajdin_1995@live.com');
+  
+      // You can add more interactions as needed
+  
+      // Verify that the input fields contain the expected values
+      cy.get('.signup-form input:nth-child(2)').should('have.value', 'AjdinTester');
+      //cy.get('.signup-form input:nth-child(3)').should('have.value', 'ajdin_1995@live.com');
+  
+      // Submit the form (assuming you have a form submit action)
+      // You may add form submission code here
+
+      cy.xpath("//button[normalize-space()='Signup']").should('be.visible').click();
+
+
+      // next page in line 
+
       cy.request({
-        url: 'https://www.automationexercise.com/login',
+        url: 'https://www.automationexercise.com/login', // Replace with your API URL
         method: 'GET',
-        headers: {
-          'Referrer-Policy': 'same-origin',
-        },
       }).then((response) => {
         // Assert the response status code
         expect(response.status).to.eq(200);
   
         // Add more assertions or checks on the response data if needed
   
-        // Now, you can perform additional actions on the page, like visiting or interacting with elements
-        cy.visit('https://www.automationexercise.com/some-other-page'); // Example: Visiting another page
-  
-        // Add more assertions or interactions on the new page if required
-      });
-    });
-  
-    it('checking sign up box', () => {
-      
-        cy.xpath("//section[@id='form']//div[@class='col-sm-4']")
-            .should('be.visible');
+        // Check the URL after the API request
+        cy.url().should('eq', 'https://www.automationexercise.com/signup');
+
+
+        });
+
+        //registrationForm complete output 
+
+        //chooses the gender
+
+        cy.xpath("//input[@id='id_gender1']").should('be.visible').click();
+
+
+        //chooses the desired password 
+
+        cy.xpath("//input[@id='password']").should('be.empty').click(setTimeout(() => {
+            
+        }, 1000))
+
+        .type('Belkon12345!');
+
+
+        });
+
+
         
-        cy.xpath("//h2[normalize-space()='New User Signup!']")
-            .should('have.text' , 'New User Signup!');
-
-            //boxcleared
 
 
-     });
+    });
 
-
-     it('checking sign up box', () => {
-      
-       //sending the request for registartion 
-
-       //first input field of 
-
-       cy.xpath("//input[@placeholder='Name']").should('be.empty')
-        .type('ajdin');
-
-
-     });
-
-
-  });
   
